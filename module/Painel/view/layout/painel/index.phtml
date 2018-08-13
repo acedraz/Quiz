@@ -1,0 +1,28 @@
+<section class="content-header">
+    <h1>
+
+        <small></small>
+    </h1>
+</section>
+<?php
+                foreach($quizs as $quiz):
+                extract($quiz->toArray()); ?>
+                <div class="col-md-4"><div class="info-box">
+                        <span class="info-box-icon bg-gree"><i class="fa fa-edit"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text"><?=$name;?></span>
+                            <span class="info-box-number">
+                                <div class="margin">
+                                    <?php
+                                    if($status == 1)
+                                      echo  "<a href=\"".$this->url('layout',['action' => 'quiz', 'id'=>$id])."\" type=\"button\" class=\"btn btn-default btn-success btn-block\">Iniciar</a>";
+                                    else
+                                       echo "<a type=\"button\" class=\"btn btn-default btn-danger btn-block disabled\">Finalizado</a>";
+                                    ?>
+
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>

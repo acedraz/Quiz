@@ -1,0 +1,599 @@
+<head>
+    <?= $this->headTitle('Dashboard')->setSeparator(' - ')->setAutoEscape(false) ?>
+</head>
+<?php
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+            <!-- WIDGETS -->
+
+            <!-- END WIDGETS -->
+                <!--BOX-->
+            <div class="row">
+                <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">CADASTRED QUIZ</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table table-bordered" id="#quizcadastred">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>name</th>
+                                <th>description</th>
+                                <th>created at</th>
+                                <th>update at</th>
+                                <th>status</th>
+                                <th>actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach($quizs as $quiz):
+                                extract($quiz->toArray()); ?>
+                                <tr>
+                                    <td><?=$id;?></td>
+                                    <td><?=$name;?></td>
+                                    <td><?=$description;?></td>
+                                    <td><?=$created_at;?></td>
+                                    <td><?=$updated_at;?></td>
+                                    <td><?php
+                                    if($status == 1)
+                                    {
+                                        echo "<span class='badge bg-blue'>Enable</span>";
+                                    }
+                                    else{
+                                        echo "<span class='badge bg-yellow'>Disabled</span>";
+                                    }
+                                        ?>
+                                    </td>
+                                    <td><a class="btn btn-success" data-toggle="modal" data-target="#modal-update">Update</a>
+                                        <?php
+                                            if($status == 0)
+                                            echo "<a class=\"btn btn-success\" href=\"".$this->url('dashboard',['action' => 'open', 'id'=>$id])."\">Open</a>";
+                                            else
+                                                echo "<a class=\"btn btn-danger\" href=\"".$this->url('dashboard',['action' => 'finalize', 'id'=>$id])."\">Finalize</a>";
+                                            ?>
+                                        <a class="btn btn-social-icon btn-google" href="<?=$this->url('dashboard',['action' => 'delete', 'id'=>$id]);?>"><i class="fa  fa-trash"></i> </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer clearfix">
+                        <a class="btn btn-warning" data-toggle="modal" data-target="#modal-creat-quiz">CREATE QUIZ</a>
+                    </div>
+                </div>
+                <!--END BOX-->
+                </div>
+            </div>
+            <!-- BOX QUESTIONS -->
+            <div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">CADASTRED QUESTIONS</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered" id="#cadastredquestion">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>subject</th>
+                        <th>#quiz</th>
+                        <th>type</th>
+                        <th>created at</th>
+                        <th>update at</th>
+                        <th>status</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    foreach($questions as $question):
+                        extract($question->toArray()); ?>
+                        <tr>
+                            <td><?=$id;?></td>
+                            <td><?=$subject;?></td>
+                            <td><?=$quiz_id;?></td>
+                            <td>
+                            <?php if($type == 0){
+                            echo "<a class=\"btn btn-social-icon btn-faceboook\"><i class=\"fa  fa-circle-o\"></i> </a>";
+                            }
+                            elseif($type == 1){
+                                echo "<a class=\"btn btn-social-icon btn-facebook\"><i class=\"fa  fa-check\"></i> </a>";
+                            }
+                            else{
+                                echo "<a class=\"btn btn-social-icon btn-facebook\"><i class=\"fa  fa-text-width\"></i> </a>";
+                            }?>
+                            </td>
+                            <td><?=$created_at;?></td>
+                            <td><?=$updated_at;?></td>
+                            <td><?php
+                                if($status == 1)
+                                {
+                                    echo "<span class='badge bg-blue'>Enable</span>";
+                                }
+                                else{
+                                    echo "<span class='badge bg-yellow'>Disabled</span>";
+                                }
+                                ?>
+                            </td>
+                            <td><a class="btn btn-success" data-toggle="modal" data-target="#modal-update">Update</a>
+                                <?php
+                                if($status == 0)
+                                    echo "<a class=\"btn btn-success\" href=\"".$this->url('dashboard',['action' => 'enablequestion', 'id'=>$id])."\">Enable</a>";
+                                else
+                                    echo "<a class=\"btn btn-danger\" href=\"".$this->url('dashboard',['action' => 'disablequestion', 'id'=>$id])."\">Disable</a>";
+                                ?>
+                                <a class="btn btn-social-icon btn-google" href="<?=$this->url('dashboard',['action' => 'deletequestion', 'id'=>$id]);?>"><i class="fa  fa-trash"></i> </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <a class="btn btn-warning" data-toggle="modal" data-target="#modal-creat-question">CREATE QUESTION</a>
+            </div>
+        </div>
+        <!--END BOX-->
+    </div>
+</div>
+            <!-- END BOX QUESTIONS -->
+            <!-- ANSWERS QUESTIONS -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">CADASTRED ANSWERS</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-bordered" id="#cadastredquestion">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>answer</th>
+                                    <th>is correct</th>
+                                    <th>#question</th>
+                                    <th>created at</th>
+                                    <th>update at</th>
+                                    <th>status</th>
+                                    <th>actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                foreach($answers as $answerx):
+                                extract($answerx->toArray()); ?>
+                                <tr>
+                                    <td><?=$id;?></td>
+                                    <td><?=$answer;?></td>
+                                    <td>
+                                        <?php if($is_correct == 1)
+                                            echo "<a class=\"btn btn-success\"><i class=\"fa  fa-check\"></i> </a>";
+                                        else
+                                            echo "<a class=\"btn btn-danger\"><i class=\"fa   fa-close\"></i> </a>";
+                                        ?>
+                                    </td>
+                                    <td><?=$question_id;?></td>
+                                    <td><?=$created_at;?></td>
+                                    <td><?=$updated_at;?></td>
+                                    <td><?php
+                                        if($status == 1)
+                                        {
+                                            echo "<span class='badge bg-blue'>Enable</span>";
+                                        }
+                                        else{
+                                            echo "<span class='badge bg-yellow'>Disabled</span>";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td><a class="btn btn-success" data-toggle="modal" data-target="#modal-update">Update</a>
+                                        <?php
+                                        if($status == 0)
+                                            echo "<a class=\"btn btn-success\" href=\"".$this->url('dashboard',['action' => 'enableanswer', 'id'=>$id])."\">Enable</a>";
+                                        else
+                                            echo "<a class=\"btn btn-danger\" href=\"".$this->url('dashboard',['action' => 'disableanswer', 'id'=>$id])."\">Disable</a>";
+                                        ?>
+                                        <a class="btn btn-social-icon btn-google" href="<?=$this->url('dashboard',['action' => 'deleteanswer', 'id'=>$id]);?>"><i class="fa  fa-trash"></i> </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <a class="btn btn-warning" data-toggle="modal" data-target="#modal-creat-answer">CREATE ANSWER</a>
+                        </div>
+                    </div>
+                    <!--END BOX-->
+                </div>
+            </div>
+            <!-- END ANSWERS QUESTIONS -->
+            <!-- BOX ANSWERED USERS -->
+            <div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">ANSWEREDS USERS</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered" id="#cadastredquestion">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>name</th>
+                        <th>email</th>
+                        <th>#quiz</th>
+                        <th>created at</th>
+                        <th>update at</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    foreach($answersedusers as $answereduserx):
+                    extract($answereduserx->toArray()); ?>
+                    <tr>
+                        <td><?=$id;?></td>
+                        <td><?=$name;?></td>
+                        <td><?=$email;?></td>
+                        <td><?=$quiz_id;?></td>
+                        <td><?=$created_at;?></td>
+                        <td><?=$updated_at;?></td>
+                    </tr>
+                    </tbody>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!--END BOX-->
+    </div>
+</div>
+            <!-- BOX END ANSWERED USERS -->
+            <!-- BOX ANSWERED INFO -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">ANSWEREDS INFOS</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-bordered" id="#cadastredquestion">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>#quiz</th>
+                                    <th>#question</th>
+                                    <th>#answered</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                foreach($answersedinfos as $answeredinfo):
+                                extract($answeredinfo->toArray()); ?>
+                                <tr>
+                                    <td><?=$id;?></td>
+                                    <td><?=$id_quiz;?></td>
+                                    <td><?=$id_question;?></td>
+                                    <td><?=$id_answered;?></td>
+                                </tr>
+                                </tbody>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!--END BOX-->
+                </div>
+            </div>
+            <!-- BOX END ANSWERED INFO -->
+<!-- MODAL CREAT QUIZ-->
+<div class="modal fade" id="modal-creat-quiz">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Creating quiz</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Quiz Name</label>
+                        <?php echo $this->formText($form->get('quiz name')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label>Quiz Description</label>
+                        <?php echo $this->formText($form->get('quiz description')); ?>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- MODAL UPDATE QUIZ-->
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Update</h4>
+            </div>
+            <div class="modal-body">
+                unavailable at the moment
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- MODAL CRREAT QUESTION-->
+<div class="modal fade" id="modal-creat-question">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">CREAT QUESTION</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Question subject</label>
+                        <?php echo $this->formText($form->get('question subject')); ?>
+                    </div>
+                    <div class="form-group">
+                        <div id="alert-question" hidden><div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h4><i class="icon fa fa-ban"></i> Alert!</h4>This system is not yet implemented for this function.
+                                Choice another .
+                            </div></div>
+                        <label>Question type</label>
+                        <?php echo $this->formSelect($form->get('question type')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label>Quiz id</label>
+                        <?php echo $this->formSelect($form->get('question id quiz')); ?>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- MODAL CRREAT ANSWER-->
+<div class="modal fade" id="modal-creat-answer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">CREAT ANSWER (only multiple choice questions)</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Answer</label>
+                        <?php echo $this->formText($form->get('asnwer subject')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label>Question is correct?</label>
+                        <?php echo $this->formSelect($form->get('answer correct')); ?>
+                    </div>
+                    <div class="form-group">
+                        <label>Question id</label>
+                        <?php echo $this->formSelect($form->get('answer id question')); ?>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<?php
+$this->inlineScript()->captureStart();
+echo <<<JS
+    $("#modal-creat-question .btn-primary").on("click", function(){
+            
+            if(!$("#subject_question").val()){
+                $("#subject_question").closest('.form-group').addClass('has-error');
+            }
+            else if($("#type_question").val() == 1){
+                $("#alert-question" ).show();
+                $("#subject_question").closest('.form-group').removeClass('has-error')
+                $("#type_question").closest('.form-group').addClass('has-error');
+            }
+            else{
+                $("#alert-question" ).hide();
+                $("#type_question").closest('.form-group').removeClass('has-error');
+                $(this).LoadingOverlay("show");
+                $.ajax({
+                type: "POST",
+                url:"./dashboard/creatingquestion",
+                data: { 
+                    'subject_question': $("#subject_question").val(), 
+                    'type_question': $("#type_question").val(),
+                    'id_quiz': $("#question_id_quiz").val(),
+                },
+                dataType:   'json', 
+                async:      true,
+                success: function(response) {
+                    ///*
+                    if(response){
+                        $('#modal-creat-question').modal('toggle');
+                        location.reload();
+                    }
+                     else{
+                        $("#modal-creat-question .modal-body").html("Error in operation");
+                     }//*/
+                //$(".modal-body").html(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown){ 
+                   // console.log('my message:' + err); 
+                   // $('#result').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
+                console.log('jqXHR:');
+                console.log(jqXHR);
+                console.log('textStatus:');
+                console.log(textStatus);
+                console.log('errorThrown:');
+                console.log(errorThrown);
+                }
+            }); 
+            }
+            
+            
+        });
+
+        $("#modal-creat-quiz .btn-primary").on("click", function(){
+            
+            if(!$("#name_quiz").val()){
+                $("#name_quiz").closest('.form-group').addClass('has-error');
+            }
+            else if(!$("#description_quiz").val()){
+                $("#name_quiz").closest('.form-group').removeClass('has-error')
+                $("#description_quiz").closest('.form-group').addClass('has-error');
+            }
+            else{
+                $("#description_quiz").closest('.form-group').removeClass('has-error');
+                $(this).LoadingOverlay("show");
+               $.ajax({
+                type: "POST",
+                url:"./dashboard/creatingquiz",
+                data: { 
+                    'name_quiz': $("#name_quiz").val(), 
+                    'description_quiz': $("#description_quiz").val()
+                },
+                dataType:   'json', 
+                async:      true,
+                success: function(response) {
+                    ///*
+                    if(response){
+                        $('#modal-creat-quiz').modal('toggle');
+                        location.reload();
+                    }
+                     else{
+                        $(".modal-body").html("Error in operation");
+                     }//*/
+                //$(".modal-body").html(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown){ 
+                   // console.log('my message:' + err); 
+                   // $('#result').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
+                console.log('jqXHR:');
+                console.log(jqXHR);
+                console.log('textStatus:');
+                console.log(textStatus);
+                console.log('errorThrown:');
+                console.log(errorThrown);
+                }
+            }); 
+            }
+        });
+        
+        $("#modal-creat-answer .btn-primary").on("click", function(){
+            
+            if(!$("#subject_answer").val()){
+                $("#subject_answer").closest('.form-group').addClass('has-error');
+            }
+            else{
+                $("#subject_answer").closest('.form-group').removeClass('has-error');
+                $(this).LoadingOverlay("show");
+               $.ajax({
+                type: "POST",
+                url:"./dashboard/creatinganswer",
+                data: { 
+                    'answer': $("#subject_answer").val(), 
+                    'is_correct': $("#answer_correct").val(),
+                    'question_id': $("#answer_id_question").val(),
+                },
+                dataType:   'json', 
+                async:      true,
+                success: function(response) {
+                    ///*
+                    if(response){
+                        $('#modal-creat-quiz').modal('toggle');
+                        location.reload();
+                    }
+                     else{
+                        $(".modal-body").html("Error in operation");
+                     }//*/
+                //$(".modal-body").html(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown){ 
+                   // console.log('my message:' + err); 
+                   // $('#result').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
+                console.log('jqXHR:');
+                console.log(jqXHR);
+                console.log('textStatus:');
+                console.log(textStatus);
+                console.log('errorThrown:');
+                console.log(errorThrown);
+                }
+            }); 
+            }
+        });
+    
+JS;
+$this->inlineScript()->captureEnd();
+?>
